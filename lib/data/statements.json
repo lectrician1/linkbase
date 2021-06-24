@@ -1,0 +1,23 @@
+{
+    "artist": {
+        "discogs": {
+            "Real Name": "short text",
+            "Profile": "formattable long text",
+            "Web Links": "long text list",
+            "Aliases": "long text list",
+            "In Groups": "long text list",
+            "Submission Notes": "long text"
+        },
+        "MusicBrainz": {
+            "Artist Details": {
+                "Name": "short text",
+                "Sort Name": "short text",
+                "Disambiguation": "short text",
+                "Type": "dropdown list",
+                "Gender": "dropdown list",
+                "Area": "short text autofill",
+                "IPI codes": "addable short description"
+            }
+        }
+    }
+}
