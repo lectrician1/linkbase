@@ -1,0 +1,2 @@
+// Artists
+// Details

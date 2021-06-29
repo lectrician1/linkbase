@@ -1,11 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:linkbase/widgets/PageTemplate.dart';
 
 class Home extends StatelessWidget {
+  Home({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return PageTemplate(slivers: [
+    return PageTemplate(key: key, slivers: [
       SliverPadding(
         padding: EdgeInsets.symmetric(vertical: 20),
         sliver: SliverToBoxAdapter(
@@ -16,12 +19,14 @@ class Home extends StatelessWidget {
                         MediaQuery.of(context).size.width * 0.03),
                     child: Column(mainAxisSize: MainAxisSize.min, children: [
                       Flexible(
-                        child: AutoSizeText.rich(
-                            TextSpan(text: 'Welcome to Linkbase'),
-                            minFontSize: 0,
-                            stepGranularity: 0.1,
-                            maxLines: 2,
-                            style: Theme.of(context).textTheme.headline1),
+                        child: LayoutBuilder(builder: (context, constraints) {
+                          return SelectableText('Welcome to Linkbase',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline1
+                                  ?.merge(TextStyle(
+                                      fontSize: constraints.maxWidth * 0.13)));
+                        }),
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.width * 0.03,
@@ -39,8 +44,9 @@ class Home extends StatelessWidget {
       SliverToBoxAdapter(
         child: bigCard(
           context: context,
-          image: Image.network(
-              'https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Wikidata-logo.svg/640px-Wikidata-logo.svg.png'),
+          image: SvgPicture.asset(
+            'images/Wikidata-logo.svg',
+          ),
           title: 'Wikidata',
           description:
               'Wikidata is the central database project for Wikimedia projects like Wikipedia. Music data is stored, organized, and retreived and is sourced and linked to other music identifiers on the web.',
@@ -51,8 +57,7 @@ class Home extends StatelessWidget {
         sliver: SliverToBoxAdapter(
           child: bigCard(
               context: context,
-              image: Image.network(
-                  'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/MusicBrainz_Logo_Icon_%282016%29.svg/220px-MusicBrainz_Logo_Icon_%282016%29.svg.png'),
+              image: SvgPicture.asset('images/MusicBrainz_logo_icon.svg'),
               title: 'MusicBrainz',
               description:
                   'MusicBrainz is a project which aims to create a collaborative music database.'),

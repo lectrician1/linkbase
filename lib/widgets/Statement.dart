@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:linkbase/widgets/SmallIconButton.dart';
+
+enum Database {
+  Wikidata,
+  Musicbrainz,
+  Discogs
+}
 
 class Statement extends StatefulWidget {
-  final String property;
-  final String value;
+  final Map data;
+  final List options = ['Copy', 'Move', 'Delete', 'Settings'];
 
-  const Statement({
+  Statement({
     Key? key,
-    required this.property,
-    required this.value,
+    required this.data,
   }) : super(key: key);
 
   @override
@@ -17,96 +24,170 @@ class Statement extends StatefulWidget {
 class _StatementState extends State<Statement> {
   bool isChecked = false;
   bool editing = false;
+  bool expanded = false;
   late String property;
   late String value;
 
   @override
   initState() {
     super.initState();
-    property = widget.property;
-    value = widget.value;
     if (value.length == 0) editing = true;
   }
 
-  Widget textSwitch(String text) {
+  Widget textSwitch({required String text, TextStyle? style}) {
     if (editing)
       return TextField(
+        textAlign: TextAlign.center,
         autofocus: true,
         decoration: InputDecoration(isDense: true),
         controller: TextEditingController(text: text),
         onChanged: (newText) => value = newText,
         onEditingComplete: () => setState(() => editing = false),
       );
-    return Text(
+    return SelectableText(
       text,
-      style: Theme.of(context).textTheme.subtitle1,
+      style: style,
     );
+  }
+
+  String _databaseName(Database database) {
+    switch (database) {
+      case Database.Wikidata:
+        return 'Wikidata';
+      case Database.Musicbrainz:
+        return 'Musicbrainz';
+      case Database.Discogs:
+        return 'Discogs';
+    }
+  }
+
+  String _databaseLogoPath(Database database) {
+    switch (database) {
+      case Database.Wikidata:
+        return 'images/Wikidata-logo.svg';
+      case Database.Musicbrainz:
+        return 'images/MusicBrainz_logo_icon.svg';
+      case Database.Discogs:
+        return 'images/discogs vinyl record mark.svg';
+    }
+  }
+
+  double _databaseStatusButtonIconHeight(Database database) {
+    switch (database) {
+      case Database.Wikidata: 
+        return 20;
+      case Database.Musicbrainz: 
+        return 23;
+      case Database.Discogs: 
+        return 20;
+    }
+  }
+
+  Widget _databaseStatusButtonChild({required bool added, required Database database}) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SvgPicture.asset(
+          _databaseLogoPath(database),
+          height: _databaseStatusButtonIconHeight(database),
+        ),
+        Icon(
+          added ? Icons.check : Icons.add,
+        ),
+      ]);
+  }
+
+  Widget _databaseStatusButton({required bool added, required Database database}) {
+    return Padding(
+        padding: EdgeInsets.all(5.0),
+        child: Tooltip(
+            message: added ? 'Added' : 'Add' + ' to ${_databaseName(database)}',
+            child: added ? 
+              OutlinedButton(
+                onPressed: () => goTo(),
+                child: _databaseStatusButtonChild(added: added, database: database)) : 
+              ElevatedButton(
+                onPressed: () => add(),
+                child: _databaseStatusButtonChild(added: added, database: database))));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        child: Row(mainAxisSize: MainAxisSize.min, children: [
-      // Checkbox(
-      //   checkColor: Colors.white,
-      //   activeColor: Colors.blue,
-      //   value: isChecked,
-      //   onChanged: (bool? value) {
-      //     setState(() {
-      //       isChecked = value!;
-      //     });
-      //   },
-      // ),
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-              padding: EdgeInsets.all(5.0),
-              child: OutlinedButton(
-                  onPressed: () {},
-                  child: Row(mainAxisSize: MainAxisSize.min, children: [
-                    Image.network(
-                      'https://upload.wikimedia.org' +
-                          '/wikipedia/commons/thumb/f/ff/Wikidata-logo.svg/800px-Wikidata-logo.svg.png',
-                      height: 20,
-                      width: 20,
-                    ),
-                    Icon(Icons.add),
-                  ]))),
-          Padding(
-              padding: EdgeInsets.all(5.0),
-              child: OutlinedButton(
-                  onPressed: () {},
-                  child: Row(mainAxisSize: MainAxisSize.min, children: [
-                    Image.network(
-                      'https://upload.wikimedia.org/wikipedia/commons/thu' +
-                          'mb/9/9a/MusicBrainz_Logo_Icon_%282016%29.svg/220px-MusicBrainz_Logo_Icon_%282016%29.svg.png',
-                      height: 20,
-                      width: 20,
-                    ),
-                    Icon(Icons.check),
-                  ]))),
-        ],
-      ),
-      Expanded(
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-        Flexible(child: textSwitch(value)),
-        Text(
-          property,
-          style: Theme.of(context).textTheme.subtitle2,
-        )
-      ])),
-      IconButton(
-        icon: Icon(Icons.fact_check_outlined),
-        onPressed: () {},
-      ),
-      IconButton(
-          icon: Icon(Icons.edit),
-          splashRadius: 20.0,
-          onPressed: () {
-            setState(() => editing = !editing);
-          }),
-      IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))
-    ]));
+    return Draggable(
+        dragAnchorStrategy: pointerDragAnchorStrategy,
+        feedback: Card(
+            child: Container(
+                padding: EdgeInsets.all(20),
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  SelectableText(
+                    property,
+                  )
+                ]))),
+        child: Card(
+            child: InkWell(
+                // focusColor: Colors.blue,
+                // highlightColor: Colors.blue,
+                borderRadius: BorderRadius.circular(4),
+                onTap: () {},
+                child: Row(mainAxisSize: MainAxisSize.min, children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _databaseStatusButton(added: added, database: database)
+                    ],
+                  ),
+                  Expanded(
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                        Expanded(
+                            child: Container(
+                          alignment: Alignment.center,
+                          child: textSwitch(
+                              text: property,
+                              style: Theme.of(context).textTheme.subtitle2),
+                        )),
+                        Expanded(
+                            child: Container(
+                                alignment: Alignment.center,
+                                child: textSwitch(text: value))),
+                      ])),
+                  editing
+                      ? SizedBox.shrink()
+                      : IconButton(
+                          tooltip: 'References',
+                          icon: Icon(Icons.fact_check),
+                          splashRadius: 20.0,
+                          onPressed: () {},
+                        ),
+                  editing
+                      ? SmallIconButton(
+                          tooltip: 'Submit',
+                          icon: Icons.check,
+                          onPressed: () => setState(() => editing = false),
+                        )
+                      : SmallIconButton(
+                          tooltip: 'Edit',
+                          icon: Icons.edit,
+                          onPressed: () {
+                            setState(() => editing = true);
+                          }),
+                  editing
+                      ? SmallIconButton(
+                          tooltip: 'Cancel',
+                          icon: Icons.close,
+                          onPressed: () => setState(() => editing = false))
+                      : SmallIconButton(
+                          tooltip: 'Options',
+                          icon: Icons.more_vert,
+                          onPressed: () {
+                            //showMenu(context: context, position: RelativeRect.fromRect(rect, container), items: items)
+                          },
+                          // itemBuilder: (BuildContext context) => widget.options
+                          //     .map((e) =>
+                          //         PopupMenuItem(value: e, child: SelectableText(e)))
+                          //     .toList(),
+                        )
+                ]))));
   }
 }

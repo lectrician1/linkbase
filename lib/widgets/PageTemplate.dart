@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class PageTemplate extends StatelessWidget {
-  PageTemplate({this.appBar, required this.slivers});
+  PageTemplate({Key? key, this.appBar, required this.slivers})
+      : super(key: key);
 
   final Widget? appBar;
   final List<Widget> slivers;
@@ -13,12 +14,8 @@ class PageTemplate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Linkbase'),
-          actions: [
-            IconButton(
-                onPressed: () => context.beamBack(),
-                icon: Icon(Icons.arrow_back))
-          ],
+          title: SelectableText('Linkbase'),
+          actions: [IconButton(onPressed: () {}, icon: Icon(Icons.person))],
         ),
         drawer: Drawer(
           // Add a ListView to the drawer. This ensures the user can scroll
@@ -32,18 +29,18 @@ class PageTemplate extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.blue,
                 ),
-                child: Text('Linkbase'),
+                child: SelectableText('Linkbase'),
               ),
               ListTile(
-                title: Text('Home'),
+                title: IntrinsicWidth(child: SelectableText('Home')),
                 onTap: () {
-                  context.beamToNamed('', popToNamed: '');
+                  Beamer.of(context).beamToNamed('/');
                 },
               ),
               ListTile(
-                title: Text('Artist'),
+                title: SelectableText('Artist'),
                 onTap: () {
-                  context.beamToNamed('/artist');
+                  Beamer.of(context).beamToNamed('/artist');
                 },
               ),
             ],
@@ -51,27 +48,14 @@ class PageTemplate extends StatelessWidget {
         ),
         body: SafeArea(
             child: CustomScrollView(slivers: [
-          SliverCrossAxisConstrained(
-              maxCrossAxisExtent: 1000,
-              child: SliverLayoutBuilder(builder: (context, constraints) {
-                List<Widget> newSlivers = [];
-
-                if (appBar != null) newSlivers.add(appBar!);
-
-                print(constraints.crossAxisExtent);
-
-                if (constraints.crossAxisExtent == 1000) {
-                  newSlivers.add(MultiSliver(children: slivers));
-                  print('hi');
-                } else {
-                  print('yes');
-                  newSlivers.add(SliverCrossAxisPadded.symmetric(
-                      padding: MediaQuery.of(context).size.width * 0.05,
-                      child: MultiSliver(children: slivers)));
-                }
-
-                return MultiSliver(children: newSlivers);
-              }))
+          if (appBar != null)
+            SliverCrossAxisConstrained(
+                maxCrossAxisExtent: 1000, child: appBar!),
+          SliverCrossAxisPadded.symmetric(
+              padding: MediaQuery.of(context).size.width * 0.04,
+              child: SliverCrossAxisConstrained(
+                  maxCrossAxisExtent: 1000,
+                  child: MultiSliver(children: slivers)))
         ])));
   }
 }

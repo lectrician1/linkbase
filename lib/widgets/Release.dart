@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flag/flag.dart';
 
 class Release extends StatefulWidget {
-  const Release({Key? key}) : super(key: key);
+  const Release(
+      {Key? key,
+      required this.type,
+      required this.name,
+      required this.disambiguation})
+      : super(key: key);
+
+  final String type;
+  final String name;
+  final String disambiguation;
 
   @override
   _ReleaseState createState() => _ReleaseState();
@@ -11,55 +19,68 @@ class Release extends StatefulWidget {
 class _ReleaseState extends State<Release> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-      child: Stack(
-        children: [
-          /*Positioned(
-                      top: 10,
-                      left: 10,
-                      child: Flag('AB',
-                          height: 100, width: 100, fit: BoxFit.fill)),*/
-
-          Image.network(
-            'https://upload.wikimedia.org/wikipedia/en/3/33/Twice_-_Eyes_Wide_Open.jpg',
-          ),
-          Positioned.fill(
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () {},
+    return DragTarget(builder: (
+      BuildContext context,
+      List<dynamic> accepted,
+      List<dynamic> rejected,
+    ) {
+      return Container(
+          child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+            Flexible(
+                child: Card(
+              clipBehavior: Clip.antiAlias,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
               ),
-            ),
-          ),
-          Positioned(
-              top: 10,
-              right: 10,
-              child: IconButton(
-                  onPressed: () {},
-                  splashRadius: 10,
-                  splashColor: Colors.black87,
-                  icon: Icon(
-                    Icons.more_vert,
-                    color: Colors.white,
-                  ))),
-          Positioned(
-              bottom: 10,
-              left: 10,
-              child: Row(children: [
-                Icon(
-                  Icons.multitrack_audio,
-                  color: Colors.white,
-                ),
-                SizedBox(width: 10),
-                Text(
-                  'Digital',
-                  style: TextStyle(color: Colors.white),
-                )
-              ]))
-        ],
-      ),
-    );
+              child: Stack(children: [
+                Positioned(
+                    child: Image.network(
+                  'https://upload.wikimedia.org/wikipedia/en/3/33/Twice_-_Eyes_Wide_Open.jpg',
+                )),
+                Positioned.fill(
+                    child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {},
+                  ),
+                ))
+              ]),
+            )),
+            Flexible(
+                child: Container(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(5),
+                    child: widget.type == 'digital'
+                        ? Tooltip(
+                            message: 'Digital media',
+                            child: Icon(
+                              Icons.multitrack_audio,
+                            ))
+                        : Tooltip(message: 'CD', child: Icon(Icons.album)),
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SelectableText(widget.name,
+                          style: Theme.of(context).textTheme.subtitle1),
+                      if (widget.disambiguation.length > 0)
+                        SelectableText(
+                          widget.disambiguation,
+                        )
+                    ],
+                  )
+                ],
+              ),
+            ))
+          ]));
+    });
   }
 }
