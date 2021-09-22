@@ -1,9 +1,71 @@
 {
-    "Musicbrainz": {
-        "property": "primary-type",
-        "value": "EP"
+    "main": {
+        "property": {
+            "name": "name",
+            "link": ""
+        },
+        "values": [
+            {
+                "value": "Taste of Love",
+                "databases": [
+                    {
+                        "name": "Musicbrainz",
+                        "property": {
+                            "name": "name",
+                            "link": ""
+                        },
+                        "link": ""
+                    },
+                    {
+                        "name": "Wikidata",
+                        "property": {
+                            "name": "title",
+                            "link": ""
+                        },
+                        "link": "",
+                        "qualifiers": [
+                            {
+                                "property": {
+                                    "name": "stated in",
+                                    "link": ""
+                                },
+                                "value": {
+                                    "name": "Spotify",
+                                    "link": ""
+                                }
+                            }
+                        ],
+                        "references": [
+                            {
+                                "property": {
+                                    "name": "Imported from Wikimedia project",
+                                    "link": ""
+                                },
+                                "value": {
+                                    "name": "Japanese Wikipedia",
+                                    "link": ""
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "value": "Taste of Love (In Love Ver.)",
+                "databases": [
+                    {
+                        "name": "Discogs",
+                        "property": {
+                            "name": "name",
+                            "link": ""
+                        },
+                        "link": ""
+                    }
+                ]
+            }
+        ]
     },
-    "Wikidata": {
-        "property": ""
+    "similar": {
+
     }
 }

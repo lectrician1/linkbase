@@ -15,11 +15,18 @@ class Linkbase extends StatelessWidget {
             child: Home(
               key: ValueKey('home'),
             )),
-        '/artist': (context, state) => BeamPage(
-            title: 'Linkbase: Artist',
-            child: ReleaseGroup(
-              key: ValueKey('artist'),
-            ))
+        '/entity/:entityId': (context, state) {
+          // Take the parameter of interest from BeamState
+          final entityId = state.pathParameters['entityId']!;
+
+          // Return a Widget or wrap it in a BeamPage for more flexibility
+          return BeamPage(
+            key: ValueKey('entity-$entityId'),
+            popToNamed: '/',
+            type: BeamPageType.scaleTransition,
+            child: ReleaseGroup(entityId: entityId),
+          );
+        }
       },
     ),
   );

@@ -38,7 +38,7 @@ class _ReleaseState extends State<Release> {
               child: Stack(children: [
                 Positioned(
                     child: Image.network(
-                  'https://upload.wikimedia.org/wikipedia/en/3/33/Twice_-_Eyes_Wide_Open.jpg',
+                  'https://upload.wikimedia.org/wikipedia/en/9/90/Twice_-_Eyes_Wide_Open.png',
                 )),
                 Positioned.fill(
                     child: Material(

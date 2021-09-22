@@ -4,53 +4,75 @@ import 'package:linkbase/widgets/PageTemplate.dart';
 import 'package:linkbase/widgets/Release.dart';
 import 'package:linkbase/widgets/SmallIconButton.dart';
 import 'package:linkbase/widgets/Statement.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class ReleaseGroup extends StatelessWidget {
-  ReleaseGroup({Key? key}) : super(key: key);
+Future<Map> getEntity(entityId) async {
+  var url = Uri.parse('https://www.wikidata.org/w/api.php');
 
-  final formatData = [
-    {
-      'property': 'Name',
-      'values': {'MusicBrainz': 'Taste of Love', 'Wikidata': 'Taste of Love'}
-    },
-    {
-      'property': 'Artist',
-      'values': {'MusicBrainz': 'Twice', 'Wikidata': 'Twice'}
-    },
-    {
-      'property': 'Type',
-      'values': {'MusicBrainz': 'Album', 'Wikidata': 'Album'}
-    },
-  ];
+  var body = {
+    "action": "wbgetentities",
+    "format": "json",
+    "ids": entityId,
+    "origin": "*"
+  };
 
-  final releases = [
-    {'type': 'digital', 'name': 'Eyes Wide Open', 'disambiguation': ''},
-    {'type': 'digital', 'name': 'Eyes Wide Open', 'disambiguation': ''},
-    {'type': 'digital', 'name': 'Eyes Wide Open', 'disambiguation': ''},
-    {'type': 'CD', 'name': 'Eyes Wide Open', 'disambiguation': 'Story ver.'},
-    {'type': 'CD', 'name': 'Eyes Wide Open', 'disambiguation': 'Style ver.'},
-    {'type': 'CD', 'name': 'Eyes Wide Open', 'disambiguation': 'Retro ver.'},
-  ];
+  var headers = {"User-Agent": "Linkbase test (run by User:Lectrician1)"};
+
+  return jsonDecode((await http.post(url, headers: headers, body: body)).body)[
+      'entities'][entityId];
+}
+
+class ReleaseGroup extends StatefulWidget {
+  ReleaseGroup({Key? key, required this.entityId}) : super(key: key);
+
+  final String entityId;
+
+  @override
+  State<ReleaseGroup> createState() => _ReleaseGroupState();
+}
+
+class _ReleaseGroupState extends State<ReleaseGroup> {
+  late Future<Map> futureEntity;
+  late Map entityData;
+
+  @override
+  void initState() {
+    super.initState();
+    futureEntity = getEntity(widget.entityId);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      // if (constraints.maxWidth > 1000) {
-      //   return _wideLayout(context);
-      // }
-      return _smallLayout(context);
-    });
+    return FutureBuilder(
+        future: futureEntity,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            entityData = snapshot.data as Map;
+            return LayoutBuilder(builder: (context, constraints) {
+              // if (constraints.maxWidth > 1000) {
+              //   return _wideLayout(context);
+              // }
+              return _smallLayout(context);
+            });
+          } else if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          }
+
+          // By default, show a loading spinner.
+          return const CircularProgressIndicator();
+        });
   }
 
-  Widget _appBar(BuildContext context) {
+  Widget _appBar(BuildContext context, String name, String description) {
     return SliverAppBar(
       leading: Icon(Icons.album),
       title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text('Eyes Wide Open'),
-            Text('2020 studio album by Twice',
+            Text(name),
+            Text(description,
                 style: Theme.of(context)
                     .textTheme
                     .bodyText2
@@ -64,20 +86,17 @@ class ReleaseGroup extends StatelessWidget {
       backgroundColor: Colors.grey[400],
       expandedHeight: 250.0,
       //collapsedHeight: 100.0,
-      flexibleSpace: FlexibleSpaceBar(
+      /*flexibleSpace: FlexibleSpaceBar(
         //title:
         background: Image.network(
-          'https://images.squarespace-cdn.com/content/v1/56eb012f27d4bd' +
-              '29de975fae/1603937594415-WDBM3ASEDD46JC1E6UE4/ke17ZwdGBToddI8pDm48kNLmoMgP9-PoGL3pTpvfmf97gQa3H' +
-              '78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCL' +
-              'frh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65' +
-              '_fV7S1UZn9JnVc0xDeoNGVJ3wrjE4Nx_EhhKi4CB_8Hn-bafWShA1iIgJHGOspu562nPK3kQ/REV_Twice_Header.jpg?format=1000w',
+          'https://upload.wikimedia.org/wikipedia/en/9/90/Twice_-_Eyes_Wide_Open.png',
           fit: BoxFit.cover,
         ),
-      ),
+      ),*/
     );
   }
 
+  /*
   Widget _wideLayout(BuildContext context) {
     return PageTemplate(key: key, appBar: _appBar(context), slivers: <Widget>[
       SliverToBoxAdapter(
@@ -96,10 +115,10 @@ class ReleaseGroup extends StatelessWidget {
                           shrinkWrap: true,
                           itemBuilder: (BuildContext context, int index) {
                             return Statement(
-                                property:
-                                    formatData[index]['property'] as String,
-                                value: (formatData[index]['values']
-                                    as Map)['MusicBrainz']);
+                                property: 'hi',
+                                value: 'there',
+                                added: true,
+                                database: Database.Wikidata);
                           },
                           itemCount: formatData.length))
                 ],
@@ -135,26 +154,33 @@ class ReleaseGroup extends StatelessWidget {
       ))
     ]);
   }
+  */
 
   Widget _smallLayout(BuildContext context) {
-    return PageTemplate(key: key, appBar: _appBar(context), slivers: <Widget>[
-      _sliverHeading(context: context, text: 'Releases', actions: [
-        SmallIconButton(
-          onPressed: () {},
-          icon: Icons.grid_view,
-          tooltip: 'Grid view',
-        ),
-        SmallIconButton(
-          onPressed: () {},
-          icon: Icons.view_list,
-          tooltip: 'List view',
-        ),
-        SmallIconButton(
-          onPressed: () {},
-          icon: Icons.more_vert,
-          tooltip: 'Options',
-        )
-      ]),
+    var lang = 'en';
+
+    return PageTemplate(
+        appBar: _appBar(context, entityData['labels'][lang]['value'],
+            entityData['labels'][lang]['value']),
+        slivers: <Widget>[
+          _sliverHeading(context: context, text: 'Releases', actions: [
+            SmallIconButton(
+              onPressed: () {},
+              icon: Icons.grid_view,
+              tooltip: 'Grid view',
+            ),
+            SmallIconButton(
+              onPressed: () {},
+              icon: Icons.view_list,
+              tooltip: 'List view',
+            ),
+            SmallIconButton(
+              onPressed: () {},
+              icon: Icons.more_vert,
+              tooltip: 'Options',
+            )
+          ]),
+          /*
       SliverStaggeredGrid.extentBuilder(
           itemBuilder: (BuildContext context, int index) {
             var release = releases[index];
@@ -168,30 +194,51 @@ class ReleaseGroup extends StatelessWidget {
           mainAxisSpacing: 20.0,
           crossAxisSpacing: 20.0,
           staggeredTileBuilder: (index) => StaggeredTile.fit(1)),
-      _sliverHeading(context: context, text: 'Details', actions: [
-        SmallIconButton(
-          onPressed: () {},
-          icon: Icons.fact_check_outlined,
-          tooltip: 'Show all references',
-        ),
-        SmallIconButton(
-            onPressed: () {},
-            icon: Icons.edit_outlined,
-            tooltip: 'Edit all details'),
-        SmallIconButton(
-          onPressed: () {},
-          icon: Icons.more_vert_outlined,
-          tooltip: 'Options',
-        )
-      ]),
-      SliverList(
-          delegate:
-              SliverChildBuilderDelegate((BuildContext context, int index) {
-        return Statement(
-            property: formatData[index]['property'] as String,
-            value: (formatData[index]['values'] as Map)['MusicBrainz']);
-      }, childCount: formatData.length))
-    ]);
+      */
+          _sliverHeading(context: context, text: 'Details', actions: [
+            SmallIconButton(
+              onPressed: () {},
+              icon: Icons.fact_check_outlined,
+              tooltip: 'Show all references',
+            ),
+            SmallIconButton(
+                onPressed: () {},
+                icon: Icons.edit_outlined,
+                tooltip: 'Edit all details'),
+            SmallIconButton(
+              onPressed: () {},
+              icon: Icons.more_vert_outlined,
+              tooltip: 'Options',
+            )
+          ]),
+          SliverList(
+              delegate:
+                  SliverChildBuilderDelegate((BuildContext context, int index) {
+            var claim = entityData['claims'].values.elementAt(index)[0];
+            var datavalue = claim['mainsnak']['datavalue'];
+            String value = 'datavalue type not supported yet';
+            switch (datavalue['type']) {
+              case 'monolingualtext':
+                value = datavalue['value']['text'];
+                break;
+              case 'wikibase-entityid':
+                value = datavalue['value']['id'];
+                break;
+              case 'string':
+                value = datavalue['value'];
+                break;
+              case 'time':
+                value = datavalue['value']['time'];
+                break;
+            }
+
+            return Statement(
+                property: claim['mainsnak']['property'],
+                value: value,
+                added: true,
+                database: Database.Wikidata);
+          }, childCount: entityData['claims'].length))
+        ]);
   }
 
   Widget _sliverHeading(

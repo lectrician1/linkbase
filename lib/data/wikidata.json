@@ -1,3 +1,741 @@
 {
-    
+    "entities": {
+        "Q106797774": {
+            "pageid": 102066360,
+            "ns": 0,
+            "title": "Q106797774",
+            "lastrevid": 1488343196,
+            "modified": "2021-08-27T09:28:49Z",
+            "type": "item",
+            "id": "Q106797774",
+            "labels": {
+                "en": {
+                    "language": "en",
+                    "value": "Taste of Love"
+                },
+                "ko": {
+                    "language": "ko",
+                    "value": "Taste of Love"
+                },
+                "pt": {
+                    "language": "pt",
+                    "value": "Taste of Love"
+                },
+                "pt-br": {
+                    "language": "pt-br",
+                    "value": "Taste of Love"
+                },
+                "zh": {
+                    "language": "zh",
+                    "value": "Taste of Love (TWICE\u8ff7\u4f60\u5c08\u8f2f)"
+                },
+                "hy": {
+                    "language": "hy",
+                    "value": "Taste of Love (EP)"
+                },
+                "ast": {
+                    "language": "ast",
+                    "value": "Taste of Love"
+                },
+                "ca": {
+                    "language": "ca",
+                    "value": "Taste of Love"
+                },
+                "da": {
+                    "language": "da",
+                    "value": "Taste of Love"
+                },
+                "de": {
+                    "language": "de",
+                    "value": "Taste of Love"
+                },
+                "es": {
+                    "language": "es",
+                    "value": "Taste of Love"
+                },
+                "eu": {
+                    "language": "eu",
+                    "value": "Taste of Love"
+                },
+                "fi": {
+                    "language": "fi",
+                    "value": "Taste of Love"
+                },
+                "fr": {
+                    "language": "fr",
+                    "value": "Taste of Love"
+                },
+                "hu": {
+                    "language": "hu",
+                    "value": "Taste of Love"
+                },
+                "it": {
+                    "language": "it",
+                    "value": "Taste of Love"
+                },
+                "nb": {
+                    "language": "nb",
+                    "value": "Taste of Love"
+                },
+                "nl": {
+                    "language": "nl",
+                    "value": "Taste of Love"
+                },
+                "nn": {
+                    "language": "nn",
+                    "value": "Taste of Love"
+                },
+                "pl": {
+                    "language": "pl",
+                    "value": "Taste of Love"
+                },
+                "ro": {
+                    "language": "ro",
+                    "value": "Taste of Love"
+                },
+                "se": {
+                    "language": "se",
+                    "value": "Taste of Love"
+                },
+                "sq": {
+                    "language": "sq",
+                    "value": "Taste of Love"
+                },
+                "sv": {
+                    "language": "sv",
+                    "value": "Taste of Love"
+                },
+                "tr": {
+                    "language": "tr",
+                    "value": "Taste of Love"
+                },
+                "id": {
+                    "language": "id",
+                    "value": "Taste of Love (album mini)"
+                },
+                "ja": {
+                    "language": "ja",
+                    "value": "Taste of Love"
+                }
+            },
+            "descriptions": {
+                "en": {
+                    "language": "en",
+                    "value": "2021 mini album by Twice"
+                },
+                "pt": {
+                    "language": "pt",
+                    "value": "EP de Twice de 2021"
+                },
+                "zh-tw": {
+                    "language": "zh-tw",
+                    "value": "\u97d3\u570b\u5718\u9ad4TWICE\u7684\u7b2c\u5341\u5f35\u97d3\u8a9e\u8ff7\u4f60\u5c08\u8f2f"
+                }
+            },
+            "aliases": {},
+            "claims": {
+                "P361": [
+                    {
+                        "mainsnak": {
+                            "snaktype": "value",
+                            "property": "P361",
+                            "hash": "2f86773ee576ddf6460bbb25fac34852b5a1d226",
+                            "datavalue": {
+                                "value": {
+                                    "entity-type": "item",
+                                    "numeric-id": 83799517,
+                                    "id": "Q83799517"
+                                },
+                                "type": "wikibase-entityid"
+                            },
+                            "datatype": "wikibase-item"
+                        },
+                        "type": "statement",
+                        "qualifiers": {
+                            "P155": [
+                                {
+                                    "snaktype": "value",
+                                    "property": "P155",
+                                    "hash": "3dce99cd503f015f48fec593ac94577db82b8569",
+                                    "datavalue": {
+                                        "value": {
+                                            "entity-type": "item",
+                                            "numeric-id": 93127988,
+                                            "id": "Q93127988"
+                                        },
+                                        "type": "wikibase-entityid"
+                                    },
+                                    "datatype": "wikibase-item"
+                                }
+                            ]
+                        },
+                        "qualifiers-order": [
+                            "P155"
+                        ],
+                        "id": "Q106797774$ac648c52-48d2-7082-089f-d9354ab55990",
+                        "rank": "normal"
+                    },
+                    {
+                        "mainsnak": {
+                            "snaktype": "value",
+                            "property": "P361",
+                            "hash": "647daf72adbd1e0d902dc58ab43feb99ae4da0fa",
+                            "datavalue": {
+                                "value": {
+                                    "entity-type": "item",
+                                    "numeric-id": 107157160,
+                                    "id": "Q107157160"
+                                },
+                                "type": "wikibase-entityid"
+                            },
+                            "datatype": "wikibase-item"
+                        },
+                        "type": "statement",
+                        "qualifiers": {
+                            "P1545": [
+                                {
+                                    "snaktype": "value",
+                                    "property": "P1545",
+                                    "hash": "51210afb13f62d7537a51c61ba9b9586db143c24",
+                                    "datavalue": {
+                                        "value": "10",
+                                        "type": "string"
+                                    },
+                                    "datatype": "string"
+                                }
+                            ]
+                        },
+                        "qualifiers-order": [
+                            "P1545"
+                        ],
+                        "id": "Q106797774$3c431413-4582-2b22-0874-d7c9d283eac4",
+                        "rank": "normal"
+                    }
+                ],
+                "P31": [
+                    {
+                        "mainsnak": {
+                            "snaktype": "value",
+                            "property": "P31",
+                            "hash": "62f1e0c94169f54c0087adfaa105d385d5072675",
+                            "datavalue": {
+                                "value": {
+                                    "entity-type": "item",
+                                    "numeric-id": 107154516,
+                                    "id": "Q107154516"
+                                },
+                                "type": "wikibase-entityid"
+                            },
+                            "datatype": "wikibase-item"
+                        },
+                        "type": "statement",
+                        "id": "Q106797774$388f6903-467d-de7b-2a11-65269c1502e7",
+                        "rank": "normal"
+                    }
+                ],
+                "P155": [
+                    {
+                        "mainsnak": {
+                            "snaktype": "value",
+                            "property": "P155",
+                            "hash": "47386b27972d3d61f4400d9888955984a5ac9575",
+                            "datavalue": {
+                                "value": {
+                                    "entity-type": "item",
+                                    "numeric-id": 100144600,
+                                    "id": "Q100144600"
+                                },
+                                "type": "wikibase-entityid"
+                            },
+                            "datatype": "wikibase-item"
+                        },
+                        "type": "statement",
+                        "id": "Q106797774$b502d24f-43d7-49c2-aa5e-25c95b449071",
+                        "rank": "normal"
+                    }
+                ],
+                "P577": [
+                    {
+                        "mainsnak": {
+                            "snaktype": "value",
+                            "property": "P577",
+                            "hash": "3a1bf4eb7c866f24e62c3a06d29db326d7107d96",
+                            "datavalue": {
+                                "value": {
+                                    "time": "+2021-06-11T00:00:00Z",
+                                    "timezone": 0,
+                                    "before": 0,
+                                    "after": 0,
+                                    "precision": 11,
+                                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                                },
+                                "type": "time"
+                            },
+                            "datatype": "time"
+                        },
+                        "type": "statement",
+                        "id": "Q106797774$73ca74c4-48b4-4616-2c79-8f9d5a657b06",
+                        "rank": "normal"
+                    }
+                ],
+                "P407": [
+                    {
+                        "mainsnak": {
+                            "snaktype": "value",
+                            "property": "P407",
+                            "hash": "a10335a425d19169dd856e0a5f71735853eab0ab",
+                            "datavalue": {
+                                "value": {
+                                    "entity-type": "item",
+                                    "numeric-id": 9176,
+                                    "id": "Q9176"
+                                },
+                                "type": "wikibase-entityid"
+                            },
+                            "datatype": "wikibase-item"
+                        },
+                        "type": "statement",
+                        "id": "Q106797774$42ebd25f-4328-f6a7-c044-2922a17194d9",
+                        "rank": "normal"
+                    }
+                ],
+                "P175": [
+                    {
+                        "mainsnak": {
+                            "snaktype": "value",
+                            "property": "P175",
+                            "hash": "ac43dddbf936c6368125e671df0c6e29b1e30d4f",
+                            "datavalue": {
+                                "value": {
+                                    "entity-type": "item",
+                                    "numeric-id": 20645861,
+                                    "id": "Q20645861"
+                                },
+                                "type": "wikibase-entityid"
+                            },
+                            "datatype": "wikibase-item"
+                        },
+                        "type": "statement",
+                        "id": "Q106797774$bbfa48f3-42eb-1255-5641-acc61c849847",
+                        "rank": "normal"
+                    }
+                ],
+                "P1476": [
+                    {
+                        "mainsnak": {
+                            "snaktype": "value",
+                            "property": "P1476",
+                            "hash": "24d3e381eb3cd0848387e5484f50106c1ab8bf52",
+                            "datavalue": {
+                                "value": {
+                                    "text": "Taste of Love",
+                                    "language": "en"
+                                },
+                                "type": "monolingualtext"
+                            },
+                            "datatype": "monolingualtext"
+                        },
+                        "type": "statement",
+                        "id": "Q106797774$581db966-4bab-8915-1313-0fadf25c876e",
+                        "rank": "normal"
+                    }
+                ],
+                "P264": [
+                    {
+                        "mainsnak": {
+                            "snaktype": "value",
+                            "property": "P264",
+                            "hash": "189f1de0ec02305622fc0bc2437af92675c50e31",
+                            "datavalue": {
+                                "value": {
+                                    "entity-type": "item",
+                                    "numeric-id": 483238,
+                                    "id": "Q483238"
+                                },
+                                "type": "wikibase-entityid"
+                            },
+                            "datatype": "wikibase-item"
+                        },
+                        "type": "statement",
+                        "id": "Q106797774$b56c9762-4515-2970-af78-b138508cf3d5",
+                        "rank": "normal"
+                    }
+                ],
+                "P136": [
+                    {
+                        "mainsnak": {
+                            "snaktype": "value",
+                            "property": "P136",
+                            "hash": "7b1e48a10d7680fbf3317540795e108d6954d720",
+                            "datavalue": {
+                                "value": {
+                                    "entity-type": "item",
+                                    "numeric-id": 213665,
+                                    "id": "Q213665"
+                                },
+                                "type": "wikibase-entityid"
+                            },
+                            "datatype": "wikibase-item"
+                        },
+                        "type": "statement",
+                        "id": "Q106797774$9bc3a267-4745-de21-d7c8-6ab56ca183dc",
+                        "rank": "normal"
+                    }
+                ],
+                "P2671": [
+                    {
+                        "mainsnak": {
+                            "snaktype": "value",
+                            "property": "P2671",
+                            "hash": "f5792580182410da99d33671747559f10093edcf",
+                            "datavalue": {
+                                "value": "/g/11pxlkzp7w",
+                                "type": "string"
+                            },
+                            "datatype": "external-id"
+                        },
+                        "type": "statement",
+                        "id": "Q106797774$BBC86758-4391-4C36-9306-1EC15CD1252C",
+                        "rank": "normal"
+                    }
+                ],
+                "P436": [
+                    {
+                        "mainsnak": {
+                            "snaktype": "value",
+                            "property": "P436",
+                            "hash": "d547a20f43eea83429f78f5b5e1243d5c6a9366b",
+                            "datavalue": {
+                                "value": "6d8ed672-5550-4817-aedd-22c9bdc7f378",
+                                "type": "string"
+                            },
+                            "datatype": "external-id"
+                        },
+                        "type": "statement",
+                        "qualifiers": {
+                            "P1810": [
+                                {
+                                    "snaktype": "value",
+                                    "property": "P1810",
+                                    "hash": "0cd93a8991026578a45c051f3ac90cafef155027",
+                                    "datavalue": {
+                                        "value": "Taste of Love",
+                                        "type": "string"
+                                    },
+                                    "datatype": "string"
+                                }
+                            ]
+                        },
+                        "qualifiers-order": [
+                            "P1810"
+                        ],
+                        "id": "Q106797774$d329e091-4de8-d565-f8eb-a71ccfde9390",
+                        "rank": "normal",
+                        "references": [
+                            {
+                                "hash": "b6a242d5297fba933c64a86165829eec7cf02308",
+                                "snaks": {
+                                    "P248": [
+                                        {
+                                            "snaktype": "value",
+                                            "property": "P248",
+                                            "hash": "623cc8f0e2f65afe4d66b91962d354a2f3aa9a27",
+                                            "datavalue": {
+                                                "value": {
+                                                    "entity-type": "item",
+                                                    "numeric-id": 14005,
+                                                    "id": "Q14005"
+                                                },
+                                                "type": "wikibase-entityid"
+                                            },
+                                            "datatype": "wikibase-item"
+                                        }
+                                    ],
+                                    "P813": [
+                                        {
+                                            "snaktype": "value",
+                                            "property": "P813",
+                                            "hash": "e92d27129c65e9f77f424e786fcfc2c47e96d5fe",
+                                            "datavalue": {
+                                                "value": {
+                                                    "time": "+2021-06-06T00:00:00Z",
+                                                    "timezone": 0,
+                                                    "before": 0,
+                                                    "after": 0,
+                                                    "precision": 11,
+                                                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                                                },
+                                                "type": "time"
+                                            },
+                                            "datatype": "time"
+                                        }
+                                    ]
+                                },
+                                "snaks-order": [
+                                    "P248",
+                                    "P813"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "P1729": [
+                    {
+                        "mainsnak": {
+                            "snaktype": "value",
+                            "property": "P1729",
+                            "hash": "4089f62193c70b8e941c381295feeefd4be57b09",
+                            "datavalue": {
+                                "value": "mw0003524952",
+                                "type": "string"
+                            },
+                            "datatype": "external-id"
+                        },
+                        "type": "statement",
+                        "qualifiers": {
+                            "P1810": [
+                                {
+                                    "snaktype": "value",
+                                    "property": "P1810",
+                                    "hash": "0cd93a8991026578a45c051f3ac90cafef155027",
+                                    "datavalue": {
+                                        "value": "Taste of Love",
+                                        "type": "string"
+                                    },
+                                    "datatype": "string"
+                                }
+                            ]
+                        },
+                        "qualifiers-order": [
+                            "P1810"
+                        ],
+                        "id": "Q106797774$8d5cf380-4287-a12c-6257-67cd6f96f078",
+                        "rank": "normal",
+                        "references": [
+                            {
+                                "hash": "000aacbee3147388751c0536929fb87f7e8c400b",
+                                "snaks": {
+                                    "P248": [
+                                        {
+                                            "snaktype": "value",
+                                            "property": "P248",
+                                            "hash": "fa28758dedb471bbd17a5773562e57ccb962622d",
+                                            "datavalue": {
+                                                "value": {
+                                                    "entity-type": "item",
+                                                    "numeric-id": 31181,
+                                                    "id": "Q31181"
+                                                },
+                                                "type": "wikibase-entityid"
+                                            },
+                                            "datatype": "wikibase-item"
+                                        }
+                                    ],
+                                    "P813": [
+                                        {
+                                            "snaktype": "value",
+                                            "property": "P813",
+                                            "hash": "e92d27129c65e9f77f424e786fcfc2c47e96d5fe",
+                                            "datavalue": {
+                                                "value": {
+                                                    "time": "+2021-06-06T00:00:00Z",
+                                                    "timezone": 0,
+                                                    "before": 0,
+                                                    "after": 0,
+                                                    "precision": 11,
+                                                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                                                },
+                                                "type": "time"
+                                            },
+                                            "datatype": "time"
+                                        }
+                                    ]
+                                },
+                                "snaks-order": [
+                                    "P248",
+                                    "P813"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "P3962": [
+                    {
+                        "mainsnak": {
+                            "snaktype": "value",
+                            "property": "P3962",
+                            "hash": "6d5b83a258e2cfd3726e255cefbe06e5e8e816dc",
+                            "datavalue": {
+                                "value": "8809633189708",
+                                "type": "string"
+                            },
+                            "datatype": "external-id"
+                        },
+                        "type": "statement",
+                        "id": "Q106797774$A7D6A667-AA59-46F9-A40D-2126A661866A",
+                        "rank": "normal"
+                    }
+                ],
+                "P1889": [
+                    {
+                        "mainsnak": {
+                            "snaktype": "value",
+                            "property": "P1889",
+                            "hash": "0b7ce6dd1b628619fe99fba538be08934f7d3824",
+                            "datavalue": {
+                                "value": {
+                                    "entity-type": "item",
+                                    "numeric-id": 47447623,
+                                    "id": "Q47447623"
+                                },
+                                "type": "wikibase-entityid"
+                            },
+                            "datatype": "wikibase-item"
+                        },
+                        "type": "statement",
+                        "qualifiers": {
+                            "P1013": [
+                                {
+                                    "snaktype": "value",
+                                    "property": "P1013",
+                                    "hash": "758a8defa0676780ff8d05bf8a0a446b946af704",
+                                    "datavalue": {
+                                        "value": {
+                                            "entity-type": "item",
+                                            "numeric-id": 55761780,
+                                            "id": "Q55761780"
+                                        },
+                                        "type": "wikibase-entityid"
+                                    },
+                                    "datatype": "wikibase-item"
+                                }
+                            ]
+                        },
+                        "qualifiers-order": [
+                            "P1013"
+                        ],
+                        "id": "Q106797774$cb1112d0-4064-2ac9-fb17-dafe04128b0c",
+                        "rank": "normal"
+                    }
+                ],
+                "P6262": [
+                    {
+                        "mainsnak": {
+                            "snaktype": "value",
+                            "property": "P6262",
+                            "hash": "bf87496042752c6421f5224f1ebd090a167613b3",
+                            "datavalue": {
+                                "value": "kpop:Taste_of_Love_(TWICE)",
+                                "type": "string"
+                            },
+                            "datatype": "external-id"
+                        },
+                        "type": "statement",
+                        "qualifiers": {
+                            "P1810": [
+                                {
+                                    "snaktype": "value",
+                                    "property": "P1810",
+                                    "hash": "f333f2170cf9d1870e1eb2fde409c3e9dc617629",
+                                    "datavalue": {
+                                        "value": "Taste of Love (TWICE)",
+                                        "type": "string"
+                                    },
+                                    "datatype": "string"
+                                }
+                            ],
+                            "P407": [
+                                {
+                                    "snaktype": "value",
+                                    "property": "P407",
+                                    "hash": "daf1c4fcb58181b02dff9cc89deb084004ddae4b",
+                                    "datavalue": {
+                                        "value": {
+                                            "entity-type": "item",
+                                            "numeric-id": 1860,
+                                            "id": "Q1860"
+                                        },
+                                        "type": "wikibase-entityid"
+                                    },
+                                    "datatype": "wikibase-item"
+                                }
+                            ],
+                            "P9675": [
+                                {
+                                    "snaktype": "value",
+                                    "property": "P9675",
+                                    "hash": "f67ade0b635a14050a11adf8d02e92efbafd073e",
+                                    "datavalue": {
+                                        "value": "90055",
+                                        "type": "string"
+                                    },
+                                    "datatype": "string"
+                                }
+                            ]
+                        },
+                        "qualifiers-order": [
+                            "P1810",
+                            "P407",
+                            "P9675"
+                        ],
+                        "id": "Q106797774$97c6d82f-4ce0-6a62-65bd-372a23de0306",
+                        "rank": "normal"
+                    }
+                ]
+            },
+            "sitelinks": {
+                "enwiki": {
+                    "site": "enwiki",
+                    "title": "Taste of Love (EP)",
+                    "badges": []
+                },
+                "eswiki": {
+                    "site": "eswiki",
+                    "title": "Taste of Love",
+                    "badges": []
+                },
+                "fiwiki": {
+                    "site": "fiwiki",
+                    "title": "Taste of Love",
+                    "badges": []
+                },
+                "hywiki": {
+                    "site": "hywiki",
+                    "title": "Taste of Love (EP)",
+                    "badges": []
+                },
+                "idwiki": {
+                    "site": "idwiki",
+                    "title": "Taste of Love (album mini)",
+                    "badges": []
+                },
+                "itwiki": {
+                    "site": "itwiki",
+                    "title": "Taste of Love",
+                    "badges": []
+                },
+                "jawiki": {
+                    "site": "jawiki",
+                    "title": "Taste of Love",
+                    "badges": []
+                },
+                "kowiki": {
+                    "site": "kowiki",
+                    "title": "Taste of Love",
+                    "badges": []
+                },
+                "ptwiki": {
+                    "site": "ptwiki",
+                    "title": "Taste of Love (EP)",
+                    "badges": []
+                },
+                "zhwiki": {
+                    "site": "zhwiki",
+                    "title": "Taste of Love (TWICE\u8ff7\u4f60\u5c08\u8f2f)",
+                    "badges": []
+                }
+            }
+        }
+    },
+    "success": 1
 }
