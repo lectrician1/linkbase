@@ -8,18 +8,18 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 Future<Map> getEntity(entityId) async {
-  var url = Uri.parse('https://www.wikidata.org/w/api.php');
-
-  var body = {
+  var queryParameters = {
     "action": "wbgetentities",
     "format": "json",
     "ids": entityId,
     "origin": "*"
   };
 
+  var url = Uri.https('www.wikidata.org', '/w/api.php', queryParameters);
+
   var headers = {"User-Agent": "Linkbase test (run by User:Lectrician1)"};
 
-  return jsonDecode((await http.post(url, headers: headers, body: body)).body)[
+  return jsonDecode((await http.get(url, headers: headers)).body)[
       'entities'][entityId];
 }
 
@@ -214,6 +214,7 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
           SliverList(
               delegate:
                   SliverChildBuilderDelegate((BuildContext context, int index) {
+            // TODO: snaktyp "value only supported. Not "somevalue" (which is "no value").
             var claim = entityData['claims'].values.elementAt(index)[0];
             var datavalue = claim['mainsnak']['datavalue'];
             String value = 'datavalue type not supported yet';
