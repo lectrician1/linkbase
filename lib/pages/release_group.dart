@@ -149,7 +149,7 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
   Widget _smallLayout(BuildContext context) {
     return PageTemplate(
         appBar: _appBar(context, entityData['label']['value'],
-            entityData['label']['value']),
+            entityData['description']['value']),
         slivers: <Widget>[
           _sliverHeading(context: context, text: 'Releases', actions: [
             SmallIconButton(
@@ -203,26 +203,42 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
               delegate:
                   SliverChildBuilderDelegate((BuildContext context, int index) {
             var claim = entityData['claims'][index];
-            var typename = claim['mainsnak']['datavalue']['__typename'];
-            var datavalue = claim['mainsnak']['datavalue'][typename];
             String value;
-            switch (typename) {
-              case "SnakValueTime":
-                value = datavalue['time'];
+
+            switch (claim['mainsnak']['snaktype']) {
+              case 'value':
+                var typename = claim['mainsnak']['datavalue']['__typename'];
+                var datavalue = claim['mainsnak']['datavalue'][typename];
+
+                switch (typename) {
+                  case "SnakValueTime":
+                    value = datavalue['time'];
+                    break;
+                  case "SnakValueMonolingualText":
+                    value = datavalue['text'] + ' (${datavalue["language"]})';
+                    break;
+                  case "SnakValueString":
+                    value = datavalue;
+                    break;
+                  case "SnakValueQuantity":
+                    value = datavalue['amount'];
+                    break;
+                  default:
+                    value = datavalue['label']['value'];
+                    break;
+                }
                 break;
-              case "SnakValueMonolingualText":
-                value = datavalue['text'] + ' (${datavalue["language"]})';
+              case 'novalue':
+                value = 'no value';
                 break;
-              case "SnakValueString":
-                value = datavalue;
-                break;
-              case "SnakValueQuantity":
-                value = datavalue['amount'];
+              case 'unknownvalue':
+                value = 'unknownvalue';
                 break;
               default:
-                value = datavalue['label']['value'];
+                value = 'Linkbase developer messed up';
                 break;
             }
+
             return Statement(
                 property: claim['mainsnak']['property']['label']['value'],
                 value: value,

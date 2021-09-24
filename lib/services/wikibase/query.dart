@@ -12,6 +12,7 @@ query GetEntity(\$entity: ID!) {
       }
       claims {
         mainsnak {
+          snaktype
           property {
             id
             label(language: "en") {
