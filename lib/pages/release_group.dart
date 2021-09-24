@@ -1,27 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:linkbase/widgets/PageTemplate.dart';
 import 'package:linkbase/widgets/Release.dart';
 import 'package:linkbase/widgets/SmallIconButton.dart';
 import 'package:linkbase/widgets/Statement.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-Future<Map> getEntity(entityId) async {
-  var url = Uri.parse('https://www.wikidata.org/w/api.php');
-
-  var body = {
-    "action": "wbgetentities",
-    "format": "json",
-    "ids": entityId,
-    "origin": "*"
-  };
-
-  var headers = {"User-Agent": "Linkbase test (run by User:Lectrician1)"};
-
-  return jsonDecode((await http.post(url, headers: headers, body: body)).body)[
-      'entities'][entityId];
-}
+import '../services/wikibase/query.dart';
 
 class ReleaseGroup extends StatefulWidget {
   ReleaseGroup({Key? key, required this.entityId}) : super(key: key);
@@ -33,35 +17,41 @@ class ReleaseGroup extends StatefulWidget {
 }
 
 class _ReleaseGroupState extends State<ReleaseGroup> {
-  late Future<Map> futureEntity;
-  late Map entityData;
+  late Map<String, dynamic> entityData;
 
   @override
   void initState() {
     super.initState();
-    futureEntity = getEntity(widget.entityId);
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: futureEntity,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            entityData = snapshot.data as Map;
-            return LayoutBuilder(builder: (context, constraints) {
-              // if (constraints.maxWidth > 1000) {
-              //   return _wideLayout(context);
-              // }
-              return _smallLayout(context);
-            });
-          } else if (snapshot.hasError) {
-            return Text('${snapshot.error}');
-          }
+    return Query(
+      options: QueryOptions(
+          document: gql(query), variables: {'entity': widget.entityId}),
+      // Just like in apollo refetch() could be used to manually trigger a refetch
+      // while fetchMore() can be used for pagination purpose
+      builder: (QueryResult result,
+          {Future<QueryResult> Function(FetchMoreOptions)? fetchMore,
+          Future<QueryResult?> Function()? refetch}) {
+        if (result.hasException) {
+          return Text(result.exception.toString());
+        }
 
-          // By default, show a loading spinner.
-          return const CircularProgressIndicator();
+        if (result.isLoading) {
+          return Text('Loading');
+        }
+
+        entityData = result.data!["wikidata"]["entity"];
+
+        return LayoutBuilder(builder: (context, constraints) {
+          // if (constraints.maxWidth > 1000) {
+          //   return _wideLayout(context);
+          // }
+          return _smallLayout(context);
         });
+      },
+    );
   }
 
   Widget _appBar(BuildContext context, String name, String description) {
@@ -157,11 +147,9 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
   */
 
   Widget _smallLayout(BuildContext context) {
-    var lang = 'en';
-
     return PageTemplate(
-        appBar: _appBar(context, entityData['labels'][lang]['value'],
-            entityData['labels'][lang]['value']),
+        appBar: _appBar(context, entityData['label']['value'],
+            entityData['label']['value']),
         slivers: <Widget>[
           _sliverHeading(context: context, text: 'Releases', actions: [
             SmallIconButton(
@@ -214,26 +202,29 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
           SliverList(
               delegate:
                   SliverChildBuilderDelegate((BuildContext context, int index) {
-            var claim = entityData['claims'].values.elementAt(index)[0];
-            var datavalue = claim['mainsnak']['datavalue'];
-            String value = 'datavalue type not supported yet';
-            switch (datavalue['type']) {
-              case 'monolingualtext':
-                value = datavalue['value']['text'];
+            var claim = entityData['claims'][index];
+            var typename = claim['mainsnak']['datavalue']['__typename'];
+            var datavalue = claim['mainsnak']['datavalue'][typename];
+            String value;
+            switch (typename) {
+              case "SnakValueTime":
+                value = datavalue['time'];
                 break;
-              case 'wikibase-entityid':
-                value = datavalue['value']['id'];
+              case "SnakValueMonolingualText":
+                value = datavalue['text'] + ' (${datavalue["language"]})';
                 break;
-              case 'string':
-                value = datavalue['value'];
+              case "SnakValueString":
+                value = datavalue;
                 break;
-              case 'time':
-                value = datavalue['value']['time'];
+              case "SnakValueQuantity":
+                value = datavalue['amount'];
+                break;
+              default:
+                value = datavalue['label']['value'];
                 break;
             }
-
             return Statement(
-                property: claim['mainsnak']['property'],
+                property: claim['mainsnak']['property']['label']['value'],
                 value: value,
                 added: true,
                 database: Database.Wikidata);

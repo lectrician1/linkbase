@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:beamer/beamer.dart';
 import 'package:linkbase/pages/release_group.dart';
 import 'pages/home.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
-void main() => runApp(Linkbase());
+void main() async {
+  await initHiveForFlutter();
+
+  runApp(Linkbase());
+}
 
 class Linkbase extends StatelessWidget {
   final routerDelegate = BeamerDelegate(
@@ -33,12 +38,22 @@ class Linkbase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      theme: ThemeData(brightness: Brightness.light),
-      darkTheme: ThemeData(brightness: Brightness.dark),
-      themeMode: ThemeMode.system,
-      routeInformationParser: BeamerParser(),
-      routerDelegate: routerDelegate,
-    );
+    return GraphQLProvider(
+        client: ValueNotifier(
+          GraphQLClient(
+            link: HttpLink(
+              'https://graphql.toolforge.org/',
+            ),
+            // The default store is the InMemoryStore, which does NOT persist to disk
+            cache: GraphQLCache(store: HiveStore()),
+          ),
+        ),
+        child: MaterialApp.router(
+          theme: ThemeData(brightness: Brightness.light),
+          darkTheme: ThemeData(brightness: Brightness.dark),
+          themeMode: ThemeMode.system,
+          routeInformationParser: BeamerParser(),
+          routerDelegate: routerDelegate,
+        ));
   }
 }
