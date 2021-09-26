@@ -5,7 +5,7 @@ import 'package:linkbase/widgets/PageTemplate.dart';
 import 'package:linkbase/widgets/Release.dart';
 import 'package:linkbase/widgets/SmallIconButton.dart';
 import 'package:linkbase/widgets/Statement.dart';
-import '../services/wikibase/query.dart';
+import '../services/wikibase/query.graphql';
 
 class ReleaseGroup extends StatefulWidget {
   ReleaseGroup({Key? key, required this.entityId}) : super(key: key);

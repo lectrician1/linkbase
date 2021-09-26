@@ -5,10 +5,6 @@ import 'package:linkbase/widgets/SmallIconButton.dart';
 enum Database { Wikidata, Musicbrainz, Discogs }
 
 class Statement extends StatefulWidget {
-  String property;
-  String value;
-  bool added;
-  Database database;
   final List options = ['Copy', 'Move', 'Delete', 'Settings'];
 
   Statement({Key? key, required this.property, required this.value, required this.added, required this.database})

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:beamer/beamer.dart';
 import 'package:linkbase/pages/release_group.dart';
+import 'package:linkbase/services/hive.dart';
+import 'package:linkbase/services/wikibase/query.graphql';
 import 'pages/home.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:gql_http_link/gql_http_link.dart';
+import 'package:ferry/ferry.dart';
 
 void main() async {
-  await initHiveForFlutter();
+  await initClient();
 
   runApp(Linkbase());
 }
@@ -24,8 +27,27 @@ class Linkbase extends StatelessWidget {
           // Take the parameter of interest from BeamState
           final entityId = state.pathParameters['entityId']!;
 
+          
+
           // Return a Widget or wrap it in a BeamPage for more flexibility
-          return BeamPage(
+          return Query(
+      options: QueryOptions(
+          document: gql(query), variables: {'entity': entityId}),
+      
+      builder: (QueryResult result,
+          {Future<QueryResult> Function(FetchMoreOptions)? fetchMore,
+          Future<QueryResult?> Function()? refetch}) {
+        if (result.hasException) {
+          return Text(result.exception.toString());
+        }
+
+        if (result.isLoading) {
+          return Center(child: Text('Loading'));
+        }
+
+        entityData = result.data!["wikidata"]["entity"];
+
+        return BeamPage(
             key: ValueKey('entity-$entityId'),
             popToNamed: '/',
             type: BeamPageType.scaleTransition,
