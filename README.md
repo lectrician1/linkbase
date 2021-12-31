@@ -1,5 +1,5 @@
 # linkbase
-[Linkbase](https://www.wikidata.org/wiki/User:Lectrician1/Linkbase) is a work-in-progress Flutter database-management tool that allows users to compare and edit similar entries in databases. 
+[Linkbase](https://www.wikidata.org/wiki/User:Lectrician1/Linkbase) is a work-in-progress Flutter database-management tool that allows users to compare and edit similar entries in databases. You can try it here: https://linkbase-6f8c3.web.app
 
 This project is inspired by [Wikidata](https://wikidata.org) Wikimedia project lacking significant amounts of music-related data compared to other open source databases like [MusicBrainz](https://musicbrainz.org) and [Discogs](https://www.discogs.com). 
 
