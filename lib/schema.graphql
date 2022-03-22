@@ -1,0 +1,602 @@
+directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
+
+enum CacheControlScope {
+  PUBLIC
+  PRIVATE
+}
+
+type Claim {
+  mainsnak: Snak
+  type: String
+  id: ID
+  rank: String
+  qualifiers(property: [ID!]): [Snak!]!
+  references: [Reference!]!
+}
+
+type Entity {
+  page: Page
+  modified: String
+  type: String
+  id: ID
+  claims(property: [ID!]): [Claim!]!
+  label(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [String!]
+  ): EntityLabel
+  labels(language: [String!]): [EntityLabel!]!
+  description(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [String!]
+  ): EntityLabel
+  descriptions(language: [String!]): [EntityLabel!]!
+  alias(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [String!]
+  ): [EntityLabel!]!
+  aliases(language: [String!]): [EntityLabel!]!
+  sitelinks: SiteLinkMap
+  lemma(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [String!]
+  ): EntityLabel
+  lemmas(language: [String!]): [EntityLabel!]!
+  lexicalCategory: Entity
+  language: Entity
+  forms: [Entity!]!
+  senses: [Entity!]!
+  representation(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [String!]
+  ): EntityLabel
+  representations(language: [String!]): [EntityLabel!]!
+  grammaticalFeatures: [Entity!]!
+  gloss(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [String!]
+  ): EntityLabel
+  glosses(language: [String!]): [EntityLabel!]!
+}
+
+type EntityLabel {
+  language: String!
+  value: String!
+}
+
+type Image {
+  archivename: String
+  bitdepth: Int
+  canonicaltitle: String
+  comment: String
+  parsedcomment: String
+  timestamp: String
+  url: String
+  descriptionurl: String
+  descriptionshorturl: String
+  size: Int
+  width: Int
+  height: Int
+  pagecount: Int
+  sha1: String
+  mime: String
+  mediatype: String
+  thumb(width: Int, height: Int): ImageThumb
+}
+
+type ImageInfo {
+  start: String
+  images: [Image!]!
+}
+
+type ImageThumb {
+  url: String
+  width: Int
+  height: Int
+  mime: String
+}
+
+type Language {
+  code: ID!
+  name: String!
+  localname: String!
+  dir: String!
+  site(code: ID!): Site
+  sites: [Site]!
+}
+
+type Page {
+  pageid: Int
+  ns: Int
+  title: String
+  contentmodel: String
+  pagelanguage: String
+  pagelanguagehtmlcode: String
+  pagelanguagedir: String
+  touched: String
+  length: Int
+  entity: Entity
+  extract(chars: Int, sentences: Int, intro: Boolean, plaintext: Boolean, sectionformat: PageExtractSectionFormat): String
+  linkshere(continue: String, namespace: [Int!], show: [String!], limit: Int): PageList
+  imageinfo(limit: Int, start: String, end: String, continue: String, localonly: Boolean): ImageInfo
+}
+
+enum PageExtractSectionFormat {
+  plain
+  raw
+  wiki
+}
+
+type PageList {
+  continue: String
+  pages: [Page!]!
+}
+
+type Query {
+  wiki(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [ID!]
+  ): Site
+  wiktionary(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [ID!]
+  ): Site
+  wikibooks(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [ID!]
+  ): Site
+  wikiquote(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [ID!]
+  ): Site
+  wikisource(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [ID!]
+  ): Site
+  wikinews(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [ID!]
+  ): Site
+  wikiversity(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [ID!]
+  ): Site
+  wikivoyage(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [ID!]
+  ): Site
+  advisors: Site
+  advisory: Site
+  amwikimedia: Site
+  apiportal: Site
+  arwikimedia: Site
+  arbcom_cs: Site
+  arbcom_de: Site
+  arbcom_en: Site
+  arbcom_fi: Site
+  arbcom_nl: Site
+  arbcom_ru: Site
+  auditcom: Site
+  bdwikimedia: Site
+  bewikimedia: Site
+  betawikiversity: Site
+  board: Site
+  boardgovcom: Site
+  brwikimedia: Site
+  cawikimedia: Site
+  chair: Site
+  chapcom: Site
+  checkuser: Site
+  cnwikimedia: Site
+  cowikimedia: Site
+  collab: Site
+  commons: Site
+  dkwikimedia: Site
+  donate: Site
+  ecwikimedia: Site
+  electcom: Site
+  etwikimedia: Site
+  exec: Site
+  fdc: Site
+  fiwikimedia: Site
+  foundation: Site
+  gewikimedia: Site
+  grwikimedia: Site
+  grants: Site
+  hiwikimedia: Site
+  idwikimedia: Site
+  id_internalwikimedia: Site
+  iegcom: Site
+  ilwikimedia: Site
+  incubator: Site
+  internal: Site
+  labs: Site
+  labtest: Site
+  legalteam: Site
+  login: Site
+  maiwikimedia: Site
+  mediawiki: Site
+  meta: Site
+  mkwikimedia: Site
+  movementroles: Site
+  mxwikimedia: Site
+  ngwikimedia: Site
+  nlwikimedia: Site
+  nowikimedia: Site
+  noboard_chapterswikimedia: Site
+  nostalgia: Site
+  nycwikimedia: Site
+  nzwikimedia: Site
+  office: Site
+  ombudsmen: Site
+  otrs_wiki: Site
+  outreach: Site
+  pa_uswikimedia: Site
+  plwikimedia: Site
+  projectcom: Site
+  ptwikimedia: Site
+  punjabiwikimedia: Site
+  quality: Site
+  romdwikimedia: Site
+  rswikimedia: Site
+  ruwikimedia: Site
+  sewikimedia: Site
+  searchcom: Site
+  sources: Site
+  spcom: Site
+  species: Site
+  steward: Site
+  strategy: Site
+  sysop_it: Site
+  techconduct: Site
+  ten: Site
+  test: Site
+  test2: Site
+  testcommons: Site
+  testwikidata: Site
+  thankyou: Site
+  trwikimedia: Site
+  transitionteam: Site
+  uawikimedia: Site
+  usability: Site
+  vote: Site
+  wbwikimedia: Site
+  wg_en: Site
+  wikidata: Site
+  wikimania: Site
+  wikimania2005: Site
+  wikimania2006: Site
+  wikimania2007: Site
+  wikimania2008: Site
+  wikimania2009: Site
+  wikimania2010: Site
+  wikimania2011: Site
+  wikimania2012: Site
+  wikimania2013: Site
+  wikimania2014: Site
+  wikimania2015: Site
+  wikimania2016: Site
+  wikimania2017: Site
+  wikimania2018: Site
+  wikimaniateam: Site
+  sites: [Site]!
+  language(
+    """
+    If no code is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    code: [ID!]
+  ): Language
+  languages(code: [ID!]): [Language]!
+}
+
+type Reference {
+  hash: String
+  snaks(property: [ID!]): [Snak!]!
+}
+
+type Site {
+  dbname: ID!
+  url: String!
+  code: String!
+  sitename: String!
+  closed: Boolean!
+  fishbowl: Boolean!
+  private: Boolean!
+  language: Language
+  page(id: Int, title: String): Page
+  entity(id: ID!): Entity
+  sparql(distinct: Boolean = true, variable: [String!] = ["?entity"], where: [String!]!, orderBy: [String!], limit: Int, offset: Int): [Entity!]!
+}
+
+type SiteLink {
+  site: Site!
+  page: Page!
+  badges: [Entity!]!
+  url: String!
+}
+
+type SiteLinkLanguage {
+  code: ID!
+  name: String!
+  localname: String!
+  dir: String!
+  link(code: ID!): SiteLink
+  links(code: [ID!]): [SiteLink!]!
+}
+
+type SiteLinkMap {
+  wiki(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [ID!]
+  ): SiteLink
+  wiktionary(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [ID!]
+  ): SiteLink
+  wikibooks(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [ID!]
+  ): SiteLink
+  wikiquote(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [ID!]
+  ): SiteLink
+  wikisource(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [ID!]
+  ): SiteLink
+  wikinews(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [ID!]
+  ): SiteLink
+  wikiversity(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [ID!]
+  ): SiteLink
+  wikivoyage(
+    """
+    If no language is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    language: [ID!]
+  ): SiteLink
+  advisors: SiteLink
+  advisory: SiteLink
+  amwikimedia: SiteLink
+  apiportal: SiteLink
+  arwikimedia: SiteLink
+  arbcom_cs: SiteLink
+  arbcom_de: SiteLink
+  arbcom_en: SiteLink
+  arbcom_fi: SiteLink
+  arbcom_nl: SiteLink
+  arbcom_ru: SiteLink
+  auditcom: SiteLink
+  bdwikimedia: SiteLink
+  bewikimedia: SiteLink
+  betawikiversity: SiteLink
+  board: SiteLink
+  boardgovcom: SiteLink
+  brwikimedia: SiteLink
+  cawikimedia: SiteLink
+  chair: SiteLink
+  chapcom: SiteLink
+  checkuser: SiteLink
+  cnwikimedia: SiteLink
+  cowikimedia: SiteLink
+  collab: SiteLink
+  commons: SiteLink
+  dkwikimedia: SiteLink
+  donate: SiteLink
+  ecwikimedia: SiteLink
+  electcom: SiteLink
+  etwikimedia: SiteLink
+  exec: SiteLink
+  fdc: SiteLink
+  fiwikimedia: SiteLink
+  foundation: SiteLink
+  gewikimedia: SiteLink
+  grwikimedia: SiteLink
+  grants: SiteLink
+  hiwikimedia: SiteLink
+  idwikimedia: SiteLink
+  id_internalwikimedia: SiteLink
+  iegcom: SiteLink
+  ilwikimedia: SiteLink
+  incubator: SiteLink
+  internal: SiteLink
+  labs: SiteLink
+  labtest: SiteLink
+  legalteam: SiteLink
+  login: SiteLink
+  maiwikimedia: SiteLink
+  mediawiki: SiteLink
+  meta: SiteLink
+  mkwikimedia: SiteLink
+  movementroles: SiteLink
+  mxwikimedia: SiteLink
+  ngwikimedia: SiteLink
+  nlwikimedia: SiteLink
+  nowikimedia: SiteLink
+  noboard_chapterswikimedia: SiteLink
+  nostalgia: SiteLink
+  nycwikimedia: SiteLink
+  nzwikimedia: SiteLink
+  office: SiteLink
+  ombudsmen: SiteLink
+  otrs_wiki: SiteLink
+  outreach: SiteLink
+  pa_uswikimedia: SiteLink
+  plwikimedia: SiteLink
+  projectcom: SiteLink
+  ptwikimedia: SiteLink
+  punjabiwikimedia: SiteLink
+  quality: SiteLink
+  romdwikimedia: SiteLink
+  rswikimedia: SiteLink
+  ruwikimedia: SiteLink
+  sewikimedia: SiteLink
+  searchcom: SiteLink
+  sources: SiteLink
+  spcom: SiteLink
+  species: SiteLink
+  steward: SiteLink
+  strategy: SiteLink
+  sysop_it: SiteLink
+  techconduct: SiteLink
+  ten: SiteLink
+  test: SiteLink
+  test2: SiteLink
+  testcommons: SiteLink
+  testwikidata: SiteLink
+  thankyou: SiteLink
+  trwikimedia: SiteLink
+  transitionteam: SiteLink
+  uawikimedia: SiteLink
+  usability: SiteLink
+  vote: SiteLink
+  wbwikimedia: SiteLink
+  wg_en: SiteLink
+  wikidata: SiteLink
+  wikimania: SiteLink
+  wikimania2005: SiteLink
+  wikimania2006: SiteLink
+  wikimania2007: SiteLink
+  wikimania2008: SiteLink
+  wikimania2009: SiteLink
+  wikimania2010: SiteLink
+  wikimania2011: SiteLink
+  wikimania2012: SiteLink
+  wikimania2013: SiteLink
+  wikimania2014: SiteLink
+  wikimania2015: SiteLink
+  wikimania2016: SiteLink
+  wikimania2017: SiteLink
+  wikimania2018: SiteLink
+  wikimaniateam: SiteLink
+  links: [SiteLink!]!
+  language(
+    """
+    If no code is specified, the language tag from the 'Accept-Language' header will be used.
+    """
+    code: [ID!]
+  ): SiteLinkLanguage
+  languages(code: [ID!]): [SiteLinkLanguage!]!
+}
+
+type Snak {
+  snaktype: String
+  property: Entity
+  hash: String
+  datatype: String
+  datavalue: SnakValue
+}
+
+interface SnakValue {
+  type: String
+}
+
+type SnakValueEntity implements SnakValue {
+  value: Entity
+  type: String
+}
+
+type SnakValueGlobeCoordinate implements SnakValue {
+  value: SnakValueGlobeCoordinateValue
+  type: String
+}
+
+type SnakValueGlobeCoordinateValue {
+  latitude: Float
+  longitude: Float
+  precision: Float
+  globe: Entity
+}
+
+type SnakValueMonolingualText implements SnakValue {
+  value: SnakValueMonolingualTextValue
+  type: String
+}
+
+type SnakValueMonolingualTextValue {
+  text: String
+  language: String
+}
+
+type SnakValuePage implements SnakValue {
+  value: Page
+  type: String
+}
+
+type SnakValueQuantity implements SnakValue {
+  value: SnakValueQuantityValue
+  type: String
+}
+
+type SnakValueQuantityValue {
+  amount: String
+  unit: Entity
+}
+
+type SnakValueString implements SnakValue {
+  value: String
+  type: String
+}
+
+type SnakValueTime implements SnakValue {
+  value: SnakValueTimeValue
+  type: String
+}
+
+type SnakValueTimeValue {
+  time: String
+  timezone: Int
+  before: Int
+  after: Int
+  precision: Int
+  calendarmodel: Entity
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+

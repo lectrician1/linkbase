@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:linkbase/widgets/SmallIconButton.dart';
+
+import 'SmallIconButton.dart';
 
 enum Database { Wikidata, Musicbrainz, Discogs }
 
 class Statement extends StatefulWidget {
   final List options = ['Copy', 'Move', 'Delete', 'Settings'];
 
-  Statement({Key? key, required this.property, required this.value, required this.added, required this.database})
+  var property, value, added, database;
+
+  Statement(
+      {Key? key,
+      required this.property,
+      required this.value,
+      required this.added,
+      required this.database})
       : super(key: key);
 
   @override
@@ -127,7 +135,8 @@ class _StatementState extends State<Statement> {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      _databaseStatusButton(added: widget.added, database: widget.database)
+                      _databaseStatusButton(
+                          added: widget.added, database: widget.database)
                     ],
                   ),
                   // Property - value

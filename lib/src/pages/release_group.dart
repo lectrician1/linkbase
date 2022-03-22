@@ -1,24 +1,29 @@
+import 'package:ferry/ferry.dart';
+import 'package:ferry_flutter/ferry_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:linkbase/widgets/PageTemplate.dart';
-import 'package:linkbase/widgets/Release.dart';
-import 'package:linkbase/widgets/SmallIconButton.dart';
-import 'package:linkbase/widgets/Statement.dart';
-import '../services/wikibase/query.graphql';
+// import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:get_it/get_it.dart';
+import 'package:linkbase/src/components/graphql/GetEntity.data.gql.dart';
+import 'package:linkbase/src/components/graphql/GetEntity.req.gql.dart';
+import 'package:built_collection/built_collection.dart';
+import 'package:linkbase/src/components/graphql/GetEntity.var.gql.dart';
+
+import '../widgets/PageTemplate.dart';
+import '../widgets/SmallIconButton.dart';
+import '../widgets/Statement.dart';
 
 class ReleaseGroup extends StatefulWidget {
   ReleaseGroup({Key? key, required this.entityId}) : super(key: key);
 
   final String entityId;
 
+  final client = GetIt.I<Client>();
+
   @override
   State<ReleaseGroup> createState() => _ReleaseGroupState();
 }
 
 class _ReleaseGroupState extends State<ReleaseGroup> {
-  late Map<String, dynamic> entityData;
-
   @override
   void initState() {
     super.initState();
@@ -26,32 +31,25 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
 
   @override
   Widget build(BuildContext context) {
-    return Query(
-      options: QueryOptions(
-          document: gql(query), variables: {'entity': widget.entityId}),
-      // Just like in apollo refetch() could be used to manually trigger a refetch
-      // while fetchMore() can be used for pagination purpose
-      builder: (QueryResult result,
-          {Future<QueryResult> Function(FetchMoreOptions)? fetchMore,
-          Future<QueryResult?> Function()? refetch}) {
-        if (result.hasException) {
-          return Text(result.exception.toString());
-        }
+    return Operation<GGetEntityData, GGetEntityVars>(
+        client: widget.client,
+        operationRequest: GGetEntityReq((b) => b),
+        builder: (context, response, error) {
+          if (response!.loading)
+            return Center(child: CircularProgressIndicator());
 
-        if (result.isLoading) {
-          return Text('Loading');
-        }
+          if (response.data?.wikidata?.entity == null)
+            return Text('we have a problem');
 
-        entityData = result.data!["wikidata"]["entity"];
+          final entityData = response.data!.wikidata!.entity!;
 
-        return LayoutBuilder(builder: (context, constraints) {
-          // if (constraints.maxWidth > 1000) {
-          //   return _wideLayout(context);
-          // }
-          return _smallLayout(context);
+          return LayoutBuilder(builder: (context, constraints) {
+            // if (constraints.maxWidth > 1000) {
+            //   return _wideLayout(context);
+            // }
+            return _smallLayout(context, entityData);
+          });
         });
-      },
-    );
   }
 
   Widget _appBar(BuildContext context, String name, String description) {
@@ -146,10 +144,11 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
   }
   */
 
-  Widget _smallLayout(BuildContext context) {
+  Widget _smallLayout(
+      BuildContext context, GGetEntityData_wikidata_entity entityData) {
     return PageTemplate(
-        appBar: _appBar(context, entityData['label']['value'],
-            entityData['description']['value']),
+        appBar: _appBar(
+            context, entityData.label!.value, entityData.description!.value),
         slivers: <Widget>[
           _sliverHeading(context: context, text: 'Releases', actions: [
             SmallIconButton(
@@ -202,13 +201,13 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
           SliverList(
               delegate:
                   SliverChildBuilderDelegate((BuildContext context, int index) {
-            var claim = entityData['claims'][index];
+            var claim = entityData.claims[index];
             String value;
 
-            switch (claim['mainsnak']['snaktype']) {
+            switch (claim.mainsnak!.snaktype) {
               case 'value':
-                var typename = claim['mainsnak']['datavalue']['__typename'];
-                var datavalue = claim['mainsnak']['datavalue'][typename];
+                var typename = claim.mainsnak!.datavalue!.G__typename;
+                var datavalue = (claim.mainsnak!.datavalue as BuiltMap)[typename];
 
                 switch (typename) {
                   case "SnakValueTime":
@@ -240,11 +239,11 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
             }
 
             return Statement(
-                property: claim['mainsnak']['property']['label']['value'],
+                property: claim.mainsnak!.property!.label!.value,
                 value: value,
                 added: true,
                 database: Database.Wikidata);
-          }, childCount: entityData['claims'].length))
+          }, childCount: entityData.claims.length))
         ]);
   }
 

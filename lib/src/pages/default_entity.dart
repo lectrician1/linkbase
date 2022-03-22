@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:linkbase/widgets/PageTemplate.dart';
 
-class DefaultEntity extends StatelessWidget {
+import '../widgets/PageTemplate.dart';
+
+/* class DefaultEntity extends StatelessWidget {
   const DefaultEntity({Key? key, required this.data}) : super(key: key);
 
   final Map data;
@@ -27,4 +28,4 @@ class DefaultEntity extends StatelessWidget {
               ]),
         ))]);
   }
-  }
+  } */

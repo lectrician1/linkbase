@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:linkbase/widgets/PageTemplate.dart';
+
+import '../widgets/PageTemplate.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);

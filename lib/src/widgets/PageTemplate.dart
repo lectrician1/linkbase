@@ -1,8 +1,8 @@
 import 'package:beamer/beamer.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:linkbase/widgets/MainAppBar.dart';
 import 'package:sliver_tools/sliver_tools.dart';
+
+import 'MainAppBar.dart';
 
 class PageTemplate extends StatelessWidget {
   PageTemplate({Key? key, this.appBar, required this.slivers})

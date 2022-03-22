@@ -1,3 +1,5 @@
+# import './SnakFragment.graphql'
+
 query GetEntity($entity: ID!) {
   wikidata {
     entity(id: $entity) {
