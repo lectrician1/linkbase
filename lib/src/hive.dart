@@ -12,7 +12,7 @@ Future<Client> initClient() async {
 
   final cache = Cache(store: store);
 
-  final link = HttpLink('[path/to/endpoint]');
+  final link = HttpLink('https://graphql.toolforge.org/');
 
   final client = Client(
     link: link,

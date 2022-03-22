@@ -33,10 +33,15 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
   Widget build(BuildContext context) {
     return Operation<GGetEntityData, GGetEntityVars>(
         client: widget.client,
-        operationRequest: GGetEntityReq((b) => b),
+        operationRequest:
+            GGetEntityReq((b) => b..vars.entity = widget.entityId),
         builder: (context, response, error) {
           if (response!.loading)
             return Center(child: CircularProgressIndicator());
+
+          if (error != null) {
+            print(error);
+          }
 
           if (response.data?.wikidata?.entity == null)
             return Text('we have a problem');
@@ -150,7 +155,7 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
         appBar: _appBar(
             context, entityData.label!.value, entityData.description!.value),
         slivers: <Widget>[
-          _sliverHeading(context: context, text: 'Releases', actions: [
+          /* _sliverHeading(context: context, text: 'Releases', actions: [
             SmallIconButton(
               onPressed: () {},
               icon: Icons.grid_view,
@@ -166,7 +171,7 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
               icon: Icons.more_vert,
               tooltip: 'Options',
             )
-          ]),
+          ]), */
           /*
       SliverStaggeredGrid.extentBuilder(
           itemBuilder: (BuildContext context, int index) {
@@ -182,7 +187,7 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
           crossAxisSpacing: 20.0,
           staggeredTileBuilder: (index) => StaggeredTile.fit(1)),
       */
-          _sliverHeading(context: context, text: 'Details', actions: [
+          _sliverHeading(context: context, text: 'Statements', actions: [
             SmallIconButton(
               onPressed: () {},
               icon: Icons.fact_check_outlined,
@@ -207,23 +212,51 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
             switch (claim.mainsnak!.snaktype) {
               case 'value':
                 var typename = claim.mainsnak!.datavalue!.G__typename;
-                var datavalue = (claim.mainsnak!.datavalue as BuiltMap)[typename];
+                var datavalue = claim.mainsnak!.datavalue;
 
                 switch (typename) {
                   case "SnakValueTime":
-                    value = datavalue['time'];
+                    datavalue
+                        as GGetEntityData_wikidata_entity_claims_mainsnak_datavalue__asSnakValueTime;
+                    value = datavalue.SnakValueTime!.time!;
                     break;
                   case "SnakValueMonolingualText":
-                    value = datavalue['text'] + ' (${datavalue["language"]})';
+                    datavalue
+                        as GGetEntityData_wikidata_entity_claims_mainsnak_datavalue__asSnakValueMonolingualText;
+                    value = (datavalue.SnakValueMonolingualText!.text! +
+                        ' (${datavalue.SnakValueMonolingualText!.language})');
                     break;
                   case "SnakValueString":
-                    value = datavalue;
+                    datavalue
+                        as GGetEntityData_wikidata_entity_claims_mainsnak_datavalue__asSnakValueString;
+                    value = datavalue.SnakValueString!;
                     break;
                   case "SnakValueQuantity":
-                    value = datavalue['amount'];
+                    datavalue
+                        as GGetEntityData_wikidata_entity_claims_mainsnak_datavalue__asSnakValueQuantity;
+                    value = datavalue.SnakValueQuantity!.amount!;
+                    break;
+                  case "SnakValuePage":
+                    datavalue
+                        as GGetEntityData_wikidata_entity_claims_mainsnak_datavalue__asSnakValuePage;
+                    value = datavalue.SnakValuePage!.title!;
+                    break;
+                  case "SnakValueGlobeCoordinate":
+                    datavalue
+                        as GGetEntityData_wikidata_entity_claims_mainsnak_datavalue__asSnakValueGlobeCoordinate;
+                    value = datavalue.SnakValueGlobeCoordinate!.latitude!
+                            .toString() +
+                        ', ' +
+                        datavalue.SnakValueGlobeCoordinate!.longitude!
+                            .toString();
+                    break;
+                  case "SnakValueEntity":
+                    datavalue
+                        as GGetEntityData_wikidata_entity_claims_mainsnak_datavalue__asSnakValueEntity;
+                    value = datavalue.SnakValueEntity!.label!.value;
                     break;
                   default:
-                    value = datavalue['label']['value'];
+                    value = 'SnakValue implementation not supported.';
                     break;
                 }
                 break;
@@ -234,7 +267,7 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
                 value = 'unknownvalue';
                 break;
               default:
-                value = 'Linkbase developer messed up';
+                value = 'Snaktype not supported.';
                 break;
             }
 
