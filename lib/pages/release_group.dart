@@ -1,59 +1,66 @@
-import 'package:ferry/ferry.dart';
-import 'package:ferry_flutter/ferry_flutter.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:get_it/get_it.dart';
-import 'package:linkbase/src/components/graphql/GetEntity.data.gql.dart';
-import 'package:linkbase/src/components/graphql/GetEntity.req.gql.dart';
-import 'package:built_collection/built_collection.dart';
-import 'package:linkbase/src/components/graphql/GetEntity.var.gql.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:linkbase/widgets/PageTemplate.dart';
+import 'package:linkbase/widgets/Release.dart';
+import 'package:linkbase/widgets/SmallIconButton.dart';
+import 'package:linkbase/widgets/Statement.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-import '../widgets/PageTemplate.dart';
-import '../widgets/SmallIconButton.dart';
-import '../widgets/Statement.dart';
+Future<Map> getEntity(entityId) async {
+  var queryParameters = {
+    "action": "wbgetentities",
+    "format": "json",
+    "ids": entityId,
+    "origin": "*"
+  };
+
+  var url = Uri.https('www.wikidata.org', '/w/api.php', queryParameters);
+
+  var headers = {"User-Agent": "Linkbase test (run by User:Lectrician1)"};
+
+  return jsonDecode((await http.get(url, headers: headers)).body)[
+      'entities'][entityId];
+}
 
 class ReleaseGroup extends StatefulWidget {
   ReleaseGroup({Key? key, required this.entityId}) : super(key: key);
 
   final String entityId;
 
-  final client = GetIt.I<Client>();
-
   @override
   State<ReleaseGroup> createState() => _ReleaseGroupState();
 }
 
 class _ReleaseGroupState extends State<ReleaseGroup> {
+  late Future<Map> futureEntity;
+  late Map entityData;
+
   @override
   void initState() {
     super.initState();
+    futureEntity = getEntity(widget.entityId);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Operation<GGetEntityData, GGetEntityVars>(
-        client: widget.client,
-        operationRequest:
-            GGetEntityReq((b) => b..vars.entity = widget.entityId),
-        builder: (context, response, error) {
-          if (response!.loading)
-            return Center(child: CircularProgressIndicator());
-
-          if (error != null) {
-            print(error);
+    return FutureBuilder(
+        future: futureEntity,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            entityData = snapshot.data as Map;
+            return LayoutBuilder(builder: (context, constraints) {
+              // if (constraints.maxWidth > 1000) {
+              //   return _wideLayout(context);
+              // }
+              return _smallLayout(context);
+            });
+          } else if (snapshot.hasError) {
+            return Text('${snapshot.error}');
           }
 
-          if (response.data?.wikidata?.entity == null)
-            return Text('we have a problem');
-
-          final entityData = response.data!.wikidata!.entity!;
-
-          return LayoutBuilder(builder: (context, constraints) {
-            // if (constraints.maxWidth > 1000) {
-            //   return _wideLayout(context);
-            // }
-            return _smallLayout(context, entityData);
-          });
+          // By default, show a loading spinner.
+          return const CircularProgressIndicator();
         });
   }
 
@@ -149,13 +156,14 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
   }
   */
 
-  Widget _smallLayout(
-      BuildContext context, GGetEntityData_wikidata_entity entityData) {
+  Widget _smallLayout(BuildContext context) {
+    var lang = 'en';
+
     return PageTemplate(
-        appBar: _appBar(
-            context, entityData.label!.value, entityData.description!.value),
+        appBar: _appBar(context, entityData['labels'][lang]['value'],
+            entityData['labels'][lang]['value']),
         slivers: <Widget>[
-          /* _sliverHeading(context: context, text: 'Releases', actions: [
+          _sliverHeading(context: context, text: 'Releases', actions: [
             SmallIconButton(
               onPressed: () {},
               icon: Icons.grid_view,
@@ -171,7 +179,7 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
               icon: Icons.more_vert,
               tooltip: 'Options',
             )
-          ]), */
+          ]),
           /*
       SliverStaggeredGrid.extentBuilder(
           itemBuilder: (BuildContext context, int index) {
@@ -187,7 +195,7 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
           crossAxisSpacing: 20.0,
           staggeredTileBuilder: (index) => StaggeredTile.fit(1)),
       */
-          _sliverHeading(context: context, text: 'Statements', actions: [
+          _sliverHeading(context: context, text: 'Details', actions: [
             SmallIconButton(
               onPressed: () {},
               icon: Icons.fact_check_outlined,
@@ -206,78 +214,31 @@ class _ReleaseGroupState extends State<ReleaseGroup> {
           SliverList(
               delegate:
                   SliverChildBuilderDelegate((BuildContext context, int index) {
-            var claim = entityData.claims[index];
-            String value;
-
-            switch (claim.mainsnak!.snaktype) {
-              case 'value':
-                var typename = claim.mainsnak!.datavalue!.G__typename;
-                var datavalue = claim.mainsnak!.datavalue;
-                print(datavalue.runtimeType);
-
-                switch (typename) {
-                  case "SnakValueTime":
-                    datavalue
-                        as GGetEntityData_wikidata_entity_claims_mainsnak_datavalue__asSnakValueTime;
-                    value = datavalue.SnakValueTime!.time!;
-                    break;
-                  case "SnakValueMonolingualText":
-                    datavalue
-                        as GGetEntityData_wikidata_entity_claims_mainsnak_datavalue__asSnakValueMonolingualText;
-
-                    value = (datavalue.SnakValueMonolingualText!.text! +
-                        ' (${datavalue.SnakValueMonolingualText!.language})');
-                    break;
-                  case "SnakValueString":
-                    datavalue as GGetEntityData_wikidata_entity_claims_mainsnak_datavalue__asSnakValueString;
-                    value = datavalue.SnakValueString!;
-                    break;
-                  case "SnakValueQuantity":
-                    datavalue
-                        as GGetEntityData_wikidata_entity_claims_mainsnak_datavalue__asSnakValueQuantity;
-                    value = datavalue.SnakValueQuantity!.amount!;
-                    break;
-                  case "SnakValuePage":
-                    datavalue
-                        as GGetEntityData_wikidata_entity_claims_mainsnak_datavalue__asSnakValuePage;
-                    value = datavalue.SnakValuePage!.title!;
-                    break;
-                  case "SnakValueGlobeCoordinate":
-                    datavalue
-                        as GGetEntityData_wikidata_entity_claims_mainsnak_datavalue__asSnakValueGlobeCoordinate;
-                    value = datavalue.SnakValueGlobeCoordinate!.latitude!
-                            .toString() +
-                        ', ' +
-                        datavalue.SnakValueGlobeCoordinate!.longitude!
-                            .toString();
-                    break;
-                  case "SnakValueEntity":
-                    datavalue
-                        as GGetEntityData_wikidata_entity_claims_mainsnak_datavalue__asSnakValueEntity;
-                    value = datavalue.SnakValueEntity!.label!.value;
-                    break;
-                  default:
-                    value = 'SnakValue implementation not supported.';
-                    break;
-                }
+            // TODO: snaktyp "value only supported. Not "somevalue" (which is "no value").
+            var claim = entityData['claims'].values.elementAt(index)[0];
+            var datavalue = claim['mainsnak']['datavalue'];
+            String value = 'datavalue type not supported yet';
+            switch (datavalue['type']) {
+              case 'monolingualtext':
+                value = datavalue['value']['text'];
                 break;
-              case 'novalue':
-                value = 'no value';
+              case 'wikibase-entityid':
+                value = datavalue['value']['id'];
                 break;
-              case 'unknownvalue':
-                value = 'unknownvalue';
+              case 'string':
+                value = datavalue['value'];
                 break;
-              default:
-                value = 'Snaktype not supported.';
+              case 'time':
+                value = datavalue['value']['time'];
                 break;
             }
 
             return Statement(
-                property: claim.mainsnak!.property!.label!.value,
+                property: claim['mainsnak']['property'],
                 value: value,
                 added: true,
                 database: Database.Wikidata);
-          }, childCount: entityData.claims.length))
+          }, childCount: entityData['claims'].length))
         ]);
   }
 

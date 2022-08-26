@@ -5,15 +5,23 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "linkbase",
+            "name": "linkbase (debug)",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "flutterMode": "debug"
         },
         {
             "name": "linkbase (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
-        }
+        },
+        {
+            "name": "linkbase (release)",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "flutterMode": "release"
+        },
     ]
 }

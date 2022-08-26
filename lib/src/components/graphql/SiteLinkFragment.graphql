@@ -1,0 +1,10 @@
+fragment SiteLinkFragment on SiteLink {
+  site {
+    code
+    sitename
+  }
+  page {
+    title
+  }
+  url
+}

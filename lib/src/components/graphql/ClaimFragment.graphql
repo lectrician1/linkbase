@@ -1,0 +1,15 @@
+fragment ClaimFragment on Claim {
+    id
+  rank
+  mainsnak {
+      ...SnakFragment
+  }
+  qualifiers {
+      ...SnakFragment
+  }
+  references {
+    snaks {
+      ...SnakFragment
+    }
+  }
+}

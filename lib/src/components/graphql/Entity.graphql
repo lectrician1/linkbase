@@ -1,0 +1,30 @@
+# import './SnakFragment.graphql'
+
+query Entity($entity: ID!) {
+  wikidata {
+    entity(id: $entity) {
+      type
+      modified
+      labels {
+      	language
+        value
+      }
+      descriptions {
+        language
+        value
+      }
+      aliases {
+        language
+        value
+      }
+      sitelinks {
+        links {
+          ...SiteLinkFragment
+        }
+      }
+      claims {
+        ...ClaimFragment
+      }
+    }
+  }
+}
